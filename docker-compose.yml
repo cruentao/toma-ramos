@@ -13,6 +13,33 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - toma_ramos_network
+
+  backend:
+    build: ./backend
+    container_name: toma_ramos_backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: admin
+      DB_PASSWORD: admin123
+      DB_NAME: toma_ramos
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - toma_ramos_network
 
 volumes:
   postgres_data:
+
+networks:
+  toma_ramos_network:
+    driver: bridge
