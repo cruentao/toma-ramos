@@ -1,0 +1,99 @@
+-- =========================
+-- TABLA: carrera
+-- =========================
+CREATE TABLE carrera (
+  id SERIAL PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL
+);
+
+-- =========================
+-- TABLA: usuario
+-- =========================
+CREATE TABLE usuario (
+  id SERIAL PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  carrera_id INT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  FOREIGN KEY (carrera_id) REFERENCES carrera(id)
+);
+
+-- =========================
+-- TABLA: profesor
+-- =========================
+CREATE TABLE profesor (
+  id SERIAL PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  email VARCHAR(100)
+);
+
+-- =========================
+-- TABLA: ramo
+-- =========================
+CREATE TABLE ramo (
+  id SERIAL PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL
+);
+
+-- =========================
+-- TABLA: seccion
+-- =========================
+CREATE TABLE seccion (
+  id SERIAL PRIMARY KEY,
+  ramo_id INT NOT NULL,
+  profesor_id INT NOT NULL,
+  cupos_totales INT NOT NULL,
+  cupos_disponibles INT NOT NULL,
+  FOREIGN KEY (ramo_id) REFERENCES ramo(id),
+  FOREIGN KEY (profesor_id) REFERENCES profesor(id)
+);
+
+-- =========================
+-- TABLA: horario
+-- =========================
+CREATE TABLE horario (
+  id SERIAL PRIMARY KEY,
+  seccion_id INT NOT NULL,
+  dia VARCHAR(10) NOT NULL,
+  hora_inicio TIME NOT NULL,
+  hora_fin TIME NOT NULL,
+  FOREIGN KEY (seccion_id) REFERENCES seccion(id)
+);
+
+-- =========================
+-- TABLA: malla_carrera
+-- =========================
+CREATE TABLE malla_carrera (
+  id SERIAL PRIMARY KEY,
+  carrera_id INT NOT NULL,
+  ramo_id INT NOT NULL,
+  semestre INT NOT NULL,
+  UNIQUE (carrera_id, ramo_id),
+  FOREIGN KEY (carrera_id) REFERENCES carrera(id),
+  FOREIGN KEY (ramo_id) REFERENCES ramo(id)
+);
+
+-- =========================
+-- TABLA: inscripcion
+-- =========================
+CREATE TABLE inscripcion (
+  id SERIAL PRIMARY KEY,
+  usuario_id INT NOT NULL,
+  seccion_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE (usuario_id, seccion_id),
+  FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+  FOREIGN KEY (seccion_id) REFERENCES seccion(id)
+);
+
+-- =========================
+-- TABLA: bloqueo_seccion
+-- =========================
+CREATE TABLE bloqueo_seccion (
+  id SERIAL PRIMARY KEY,
+  seccion_id INT NOT NULL,
+  usuario_id INT NOT NULL,
+  expira_en TIMESTAMP NOT NULL,
+  FOREIGN KEY (seccion_id) REFERENCES seccion(id),
+  FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+);
