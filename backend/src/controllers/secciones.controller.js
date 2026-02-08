@@ -1,7 +1,5 @@
 const pool = require('../config/database');
 
-// Obtiene una sección específica con toda su información
-// Incluye datos del ramo y profesor mediante JOINs
 const obtenerSeccionPorId = async (req, res) => {
   try {
     const { id } = req.params;
@@ -26,8 +24,6 @@ const obtenerSeccionPorId = async (req, res) => {
   }
 };
 
-// Obtiene los horarios de una sección
-// Ordenados por día de la semana y hora
 const obtenerHorariosSeccion = async (req, res) => {
   try {
     const { id } = req.params;
@@ -54,8 +50,6 @@ const obtenerHorariosSeccion = async (req, res) => {
   }
 };
 
-// Crea una nueva sección
-// Inicializa cupos_disponibles igual a cupos_totales
 const crearSeccion = async (req, res) => {
   try {
     const { ramo_id, profesor_id, cupos_totales } = req.body;
@@ -66,7 +60,6 @@ const crearSeccion = async (req, res) => {
       });
     }
     
-    // Al crear la sección, cupos_disponibles = cupos_totales
     const result = await pool.query(
       `INSERT INTO seccion (ramo_id, profesor_id, cupos_totales, cupos_disponibles) 
        VALUES ($1, $2, $3, $3) RETURNING *`,

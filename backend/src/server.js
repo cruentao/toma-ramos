@@ -11,23 +11,13 @@ app.use(cors());
 app.use(express.json());
 
 
-// Importar todas las rutas
 const usuariosRoutes = require('./routes/usuarios.routes');
 const carrerasRoutes = require('./routes/carreras.routes');
 const ramosRoutes = require('./routes/ramos.routes');
 const seccionesRoutes = require('./routes/secciones.routes');
 const inscripcionesRoutes = require('./routes/inscripciones.routes');
 
-console.log({
-  usuarios: typeof usuariosRoutes,
-  carreras: typeof carrerasRoutes,
-  ramos: typeof ramosRoutes,
-  secciones: typeof seccionesRoutes,
-  inscripciones: typeof inscripcionesRoutes,
-});
 
-
-// Registrar todas las rutas
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/carreras', carrerasRoutes);
 console.log(typeof ramosRoutes, ramosRoutes);

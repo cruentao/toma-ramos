@@ -99,10 +99,7 @@ const eliminarInscripcion = async (req, res) => {
   
   try {
     const { id } = req.params;
-    
     await client.query('BEGIN');
-    
-    // Obtener seccion_id antes de eliminar
     const inscripcionResult = await client.query(
       'SELECT seccion_id FROM inscripcion WHERE id = $1',
       [id]
@@ -114,18 +111,12 @@ const eliminarInscripcion = async (req, res) => {
     }
     
     const seccion_id = inscripcionResult.rows[0].seccion_id;
-    
-    // Eliminar inscripción
     await client.query('DELETE FROM inscripcion WHERE id = $1', [id]);
-    
-    // Devolver cupo (incrementar en 1)
     await client.query(
       'UPDATE seccion SET cupos_disponibles = cupos_disponibles + 1 WHERE id = $1',
       [seccion_id]
     );
-    
     await client.query('COMMIT');
-    
     res.json({ message: 'Inscripción eliminada exitosamente' });
   } catch (error) {
     await client.query('ROLLBACK');
