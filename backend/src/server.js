@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const pool = require('./config/database')
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,6 +11,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 const usuariosRoutes = require('./routes/usuarios.routes');
@@ -48,4 +52,5 @@ app.get('/api/test-db', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log('Servidor corriendo en http://localhost:' + PORT);
+   console.log('Documentación disponible en http://localhost:' + PORT + '/api-docs');
 });
