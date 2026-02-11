@@ -1,4 +1,12 @@
+# Node / Angular
 node_modules/
+dist
+coverage
+npm-debug.log
+
+# Env
 .env
-*.log
+.env.*
+
+# System
 .DS_Store
