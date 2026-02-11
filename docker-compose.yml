@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
+      POSTGRES_PASSWORD: ${{audifono1305}}
       POSTGRES_DB: toma_ramos
     ports:
       - "5432:5432"
@@ -27,9 +27,9 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
       DB_USER: admin
-      DB_PASSWORD: admin123
+      DB_PASSWORD: ${{audifono1305}}
       DB_NAME: toma_ramos
-      JWT_SECRET: admin123
+      JWT_SECRET: ${{audifono1305}}
       JWT_EXPIRES_IN: 24h
     depends_on:
       - postgres
